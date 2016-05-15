@@ -1,0 +1,38 @@
+Installation Instructions:
+
+Step 1:
+In NagiosXI CCM, create these two commands:
+  xi_host_notification_handler_on_call
+  $USER1$/host_on_call.pl "$CONTACTNAME$" $NOTIFICATIONTYPE$ "$NOTIFICATIONISESCALATED$" "$NOTIFICATIONAUTHOR$" "$NOTIFICATIONCOMMENT$" "$HOSTNAME$" "$HOSTADDRESS$" "$HOSTALIAS$" "$HOSTDISPLAYNAME$" $HOSTSTATE$ $HOSTSTATEID$ $LASTHOSTSTATE$ $LASTHOSTSTATEID$ $HOSTSTATETYPE$ $HOSTATTEMPT$ $MAXHOSTATTEMPTS$ $HOSTEVENTID$ $HOSTPROBLEMID$ "$HOSTOUTPUT$" "$LONGHOSTOUTPUT$" "$LONGDATETIME$" "$HOSTNOTIFICATIONNUMBER$"
+ and
+  xi_service_notification_handler_on_call
+  $USER1$/service_on_call.pl "$CONTACTNAME$" $NOTIFICATIONTYPE$ "$NOTIFICATIONISESCALATED$" "$NOTIFICATIONAUTHOR$" "$NOTIFICATIONCOMMENT$" "$HOSTNAME$" "$HOSTADDRESS$" "$HOSTALIAS$" "$HOSTDISPLAYNAME$" "$SERVICEDESC$" $HOSTSTATE$ $HOSTSTATEID$ $SERVICESTATE$ $SERVICESTATEID$ $LASTSERVICESTATE$ $LASTSERVICESTATEID$ $SERVICESTATETYPE$ $SERVICEATTEMPT$ $MAXSERVICEATTEMPTS$ $SERVICEEVENTID$ $SERVICEPROBLEMID$ "$SERVICEOUTPUT$" "$LONGSERVICEOUTPUT$" "$LONGDATETIME$" "$SERVICENOTIFICATIONNUMBER$"
+ ######
+Step 2:
+In NagiosXI CCM, create contacts for all of your on-call groups primary and secondary
+  For example, create 2 contacts for the network group: network-primary and network-secondary.  Put in fake email addresses(or real, never used) and any description you'd like.
+  MAKE SURE and go to the "alert settings" tab and under the Manager Host Notification Commands, add the xi_host_notification_handler_on_call command and under Manage Service Notification Commands, add the xi_service_notification_handler_on_call command.
+ ######
+Step 3:
+ Copy the included perl scripts to /usr/local/nagios/libexec
+ chmod both files to 755
+ modify the scripts and change the variables as needed.
+ ######
+Step 4:
+ Create on-call data files
+ In the perl scripts, the two files are defined as /tmp/oncalldata-pri.txt and /tmp/oncalldata-sec.txt.  Modify filename and location as desired, make sure and update both scripts.
+ The makeup of the files are(using the network-primary and network-secondary contacts from earlier example):
+  Network On-Call group,network,clarkj
+  Windows Admins,windows,wonkaw
+ The first field doesn't matter.  The second field must match EXACTLY with the contact in XI, everything before the hyphen.  The third field must match EXACTLY the username of someone defined in XI as a user.
+ ######
+Step 5:
+ Add the primary on-call contact to any host or service
+ If using secondary, create escalations and assign to the secondary on-call contact
+ ######
+Step 6:
+ Apply configuration in NagiosXI CCM and enjoy on-call usage!  This will use the settings defined in the user's XI account.  We use a sharepoint calendar that auto exports the files with that data to an FTP and I have a script that goes and grabs the data files daily from the FTP.
+ Just modify the on-call data files when needed.
+ ######
+Step 7:(Optional - Adds link to main menu to view current on-call information)
+ Install the xioncall.zip component.  I new link on the NagiosXI menu appears labeled "NagiosXI On-Call".  Clicking this link then shows the content of the 2 files in a table within XI.  Using this component forces you to use the default filenames and locations.  You could change the code if desired, I may add configuration options in a later version.

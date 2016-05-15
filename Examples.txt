@@ -1,0 +1,21 @@
+I created two new contacts:
+	network-primary
+	network-secondary
+	
+I set the host and service notification commands on both contacts to the new commands I created during install
+	
+I created multiple new contact groups
+	network-all
+	network-boss
+	
+I add everyone who will ever be on call for network equipment to the network-all group.
+
+On all network equipment on the alert settings I set the contact to equal network-primary and set notification interval to 15 mins
+
+I create a service and host escalation, both tied to the same hostgroup that esclates to network_secondary on the 2nd alert and also sets second as the last alert
+
+Because of the above escalation, I modify the scripts and set the $alertnum variable to 3.  If I did not, starting with the 3rd alert the primary on-call would receive duplicate alerts
+
+I create a service and host escalation, both tied to the same hostgroup that esclates to network_all on the 3rd alert and sets final notification to 0
+
+I create a service and host escalation, both tied to the same hostgroup that esclates to network_boss on the 4th alert and sets final notification to 0
